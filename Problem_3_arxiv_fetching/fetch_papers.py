@@ -19,7 +19,7 @@ KEYWORDS = [
     ("Agentic AI", 'ti:"agentic" OR (abs:"agentic" AND abs:"AI agent")'),
 ]
 MAX_RESULTS_PER_KEYWORD = 15  # papers per keyword
-OUTPUT_FILE = "Problem_1_Github_website/data/papers.json"
+OUTPUT_FILE = "data/papers.json"
 # ────────────────────────────────────────────────────────────────
 
 
