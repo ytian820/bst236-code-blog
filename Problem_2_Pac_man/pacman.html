@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Valentine's Special Pac-Man Game — BST236 Coding Blog" />
+    <title>Pac-Man 💘 Valentine's Special — BST236</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- Back Link -->
+    <a href="../Problem_1_Github_website/index.html" class="back-link" id="backLink">← Back to Home</a>
+
+    <!-- Start Screen -->
+    <div class="screen" id="startScreen">
+        <h1 class="neon-title">PAC-MAN</h1>
+        <p class="subtitle">💘 Valentine's Special 💘</p>
+        <p class="instructions">
+            Use <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> or <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>
+            to move<br />
+            Eat all the dots to win!<br />
+            Collect 🌹 to shoot 💕 at ghosts!
+        </p>
+        <button class="btn" id="startBtn">Play</button>
+    </div>
+
+    <!-- Game Screen -->
+    <div class="screen hidden" id="gameScreen">
+        <div class="hud">
+            <span id="hudScore">Score: 0</span>
+            <span id="hudLives">❤️ ❤️ ❤️</span>
+            <span id="hudPower" class="power-timer hidden">🌹 0.0s</span>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div class="screen hidden" id="overScreen">
+        <h1 class="neon-title game-over-text">GAME OVER</h1>
+        <p class="final-score" id="finalScore">Score: 0</p>
+        <button class="btn" id="restartBtn">Play Again</button>
+    </div>
+
+    <!-- Victory Screen -->
+    <div class="screen hidden" id="winScreen">
+        <h1 class="neon-title win-text">YOU WIN! 🎉</h1>
+        <p class="final-score" id="winScore">Score: 0</p>
+        <button class="btn" id="winRestartBtn">Play Again</button>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>

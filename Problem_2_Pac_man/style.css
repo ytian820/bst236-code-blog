@@ -1,0 +1,194 @@
+/* ============================================================
+   Pac-Man Valentine's Special — Stylesheet
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap');
+
+:root {
+    --pink: #ff4d8d;
+    --pink-light: #ff7eb3;
+    --pink-dark: #c9184a;
+    --purple: #7b2ff7;
+    --purple-dark: #1a0533;
+    --bg: #0a0014;
+    --text: #ffe0f0;
+    --gold: #ffd700;
+    --neon-glow: 0 0 10px var(--pink), 0 0 30px var(--pink), 0 0 60px var(--pink-dark);
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ---------- Utility ---------- */
+.hidden {
+    display: none !important;
+}
+
+/* ---------- Back Link ---------- */
+.back-link {
+    position: fixed;
+    top: 16px;
+    left: 20px;
+    z-index: 200;
+    color: var(--pink-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #fff;
+}
+
+/* ---------- Screens ---------- */
+.screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* ---------- Neon Title ---------- */
+.neon-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--gold);
+    text-shadow: var(--neon-glow);
+    letter-spacing: 4px;
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+    from {
+        text-shadow: 0 0 6px var(--pink), 0 0 20px var(--pink);
+    }
+
+    to {
+        text-shadow: 0 0 14px var(--pink-light), 0 0 40px var(--pink), 0 0 80px var(--pink-dark);
+    }
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--pink-light);
+    letter-spacing: 2px;
+}
+
+.instructions {
+    font-size: 0.85rem;
+    line-height: 1.8;
+    color: #cbb3d4;
+    max-width: 340px;
+}
+
+kbd {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.65rem;
+}
+
+/* ---------- Button ---------- */
+.btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
+    padding: 0.9rem 2.5rem;
+    border: 2px solid var(--pink);
+    border-radius: 50px;
+    background: linear-gradient(135deg, var(--pink-dark), var(--purple));
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: transform 0.15s, box-shadow 0.25s;
+    box-shadow: 0 0 16px rgba(255, 77, 141, 0.4);
+}
+
+.btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 28px rgba(255, 77, 141, 0.7);
+}
+
+/* ---------- HUD ---------- */
+.hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 540px;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    color: var(--text);
+}
+
+.power-timer {
+    color: var(--gold);
+    animation: blink-power 0.5s steps(2) infinite;
+}
+
+@keyframes blink-power {
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* ---------- Canvas ---------- */
+#gameCanvas {
+    border: 3px solid var(--pink-dark);
+    border-radius: 6px;
+    box-shadow: 0 0 20px rgba(255, 77, 141, 0.3);
+    image-rendering: pixelated;
+    max-width: 95vw;
+    max-height: 78vh;
+}
+
+/* ---------- End Screens ---------- */
+.game-over-text {
+    color: #ff3060;
+}
+
+.win-text {
+    color: var(--gold);
+}
+
+.final-score {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
+    color: var(--pink-light);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 500px) {
+    .hud {
+        font-size: 0.55rem;
+        padding: 0.4rem;
+    }
+
+    .neon-title {
+        font-size: 1.6rem;
+    }
+}

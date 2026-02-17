@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Latest arXiv papers on LLMs, Medical AI, and Agentic AI — auto-updated daily." />
+    <title>arXiv Paper Feed — BST236 Coding Blog</title>
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+        /* ── arXiv-specific styles ── */
+        .feed-meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .feed-meta__updated {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        .keyword-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .keyword-badge {
+            display: inline-block;
+            padding: 0.25rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--color-primary-light);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            cursor: pointer;
+            transition: all var(--transition);
+            user-select: none;
+        }
+
+        .keyword-badge:hover,
+        .keyword-badge.active {
+            background: var(--color-primary);
+            color: #fff;
+            border-color: var(--color-primary);
+        }
+
+        .keyword-badge.all-badge {
+            background: rgba(34, 211, 238, 0.15);
+            color: var(--color-accent);
+            border-color: rgba(34, 211, 238, 0.3);
+        }
+
+        .keyword-badge.all-badge:hover,
+        .keyword-badge.all-badge.active {
+            background: var(--color-accent);
+            color: var(--color-bg);
+            border-color: var(--color-accent);
+        }
+
+        /* ── Search Bar ── */
+        .search-bar {
+            width: 100%;
+            max-width: 500px;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--color-border);
+            background: var(--color-bg-secondary);
+            color: var(--color-text);
+            outline: none;
+            transition: border-color var(--transition);
+            font-family: var(--font-sans);
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar:focus {
+            border-color: var(--color-primary-light);
+        }
+
+        .search-bar::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        /* ── Paper Cards ── */
+        .paper-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .paper-card {
+            background: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            padding: 1.5rem 1.75rem;
+            transition: all var(--transition);
+        }
+
+        .paper-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        .paper-card__title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .paper-card__title a {
+            color: inherit;
+        }
+
+        .paper-card__title a:hover {
+            color: var(--color-primary-light);
+        }
+
+        .paper-card__authors {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .paper-card__date {
+            font-size: 0.8rem;
+            color: var(--color-accent);
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .paper-card__abstract {
+            font-size: 0.88rem;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .paper-card__abstract.expanded {
+            -webkit-line-clamp: unset;
+        }
+
+        .paper-card__actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .paper-card__link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--color-primary-light);
+            padding: 0.35rem 0.9rem;
+            border-radius: 6px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: all var(--transition);
+        }
+
+        .paper-card__link:hover {
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+
+        .paper-card__keyword {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            background: rgba(34, 211, 238, 0.1);
+            color: var(--color-accent);
+            border: 1px solid rgba(34, 211, 238, 0.2);
+        }
+
+        /* ── Loading / Empty ── */
+        .loading-msg,
+        .empty-msg {
+            text-align: center;
+            padding: 3rem;
+            color: var(--color-text-muted);
+            font-size: 1rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            border: 3px solid var(--color-border);
+            border-top-color: var(--color-primary-light);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 0.75rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .paper-count {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header__title">BST236 Coding Blog</h1>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <ul class="sidebar__list">
+            <li>
+                <a href="index.html" class="sidebar__link">
+                    <span class="sidebar__icon">🏠</span> Home
+                </a>
+            </li>
+            <li>
+                <a href="hw0.html" class="sidebar__link">
+                    <span class="sidebar__icon">📘</span> Homework 0
+                </a>
+            </li>
+            <li>
+                <a href="hw1.html" class="sidebar__link">
+                    <span class="sidebar__icon">📗</span> Homework 1
+                </a>
+            </li>
+            <li>
+                <a href="arxiv.html" class="sidebar__link active">
+                    <span class="sidebar__icon">📄</span> arXiv Feed
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h2 class="page-header__title">📄 arXiv Paper Feed</h2>
+            <p class="page-header__desc">
+                Latest papers on LLMs, Medical AI, and Agentic AI — auto-updated daily via GitHub Actions.
+            </p>
+        </div>
+
+        <!-- Feed Metadata -->
+        <div class="feed-meta">
+            <span class="feed-meta__updated" id="lastUpdated">Loading…</span>
+        </div>
+
+        <!-- Keyword Filters -->
+        <div class="keyword-badges" id="keywordFilters"></div>
+
+        <!-- Search -->
+        <input class="search-bar" id="searchInput" type="text"
+            placeholder="🔍  Search papers by title, author, or abstract…" />
+
+        <!-- Paper Count -->
+        <p class="paper-count" id="paperCount"></p>
+
+        <!-- Paper List -->
+        <div class="paper-list" id="paperList">
+            <div class="loading-msg">
+                <div class="loading-spinner"></div>
+                <p>Loading papers…</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2026 BST236 Coding Blog &middot; Built with ❤️ and AI
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // ── Mobile sidebar toggle ──
+        const toggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        toggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            toggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+        });
+
+        // ── State ──
+        let allPapers = [];
+        let activeKeyword = 'All';
+
+        // ── Fetch & render ──
+        async function init() {
+            try {
+                const res = await fetch('data/papers.json');
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+
+                allPapers = data.papers || [];
+                document.getElementById('lastUpdated').textContent = `Last updated: ${data.last_updated}`;
+
+                // Build keyword filters
+                const keywords = data.keywords || [];
+                renderFilters(keywords);
+
+                // Initial render
+                renderPapers(allPapers);
+            } catch (err) {
+                document.getElementById('paperList').innerHTML =
+                    `<div class="empty-msg">⚠️ Could not load papers. Make sure <code>papers.json</code> exists.<br><small>${err.message}</small></div>`;
+            }
+        }
+
+        function renderFilters(keywords) {
+            const container = document.getElementById('keywordFilters');
+            const allBtn = document.createElement('span');
+            allBtn.className = 'keyword-badge all-badge active';
+            allBtn.textContent = 'All';
+            allBtn.addEventListener('click', () => filterByKeyword('All'));
+            container.appendChild(allBtn);
+
+            keywords.forEach(kw => {
+                const btn = document.createElement('span');
+                btn.className = 'keyword-badge';
+                btn.textContent = kw;
+                btn.addEventListener('click', () => filterByKeyword(kw));
+                container.appendChild(btn);
+            });
+        }
+
+        function filterByKeyword(kw) {
+            activeKeyword = kw;
+            // Update active badge
+            document.querySelectorAll('.keyword-badge').forEach(b => {
+                b.classList.toggle('active', b.textContent === kw);
+            });
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            let filtered = allPapers;
+
+            if (activeKeyword !== 'All') {
+                filtered = filtered.filter(p => p.keyword === activeKeyword);
+            }
+
+            if (query) {
+                filtered = filtered.filter(p =>
+                    p.title.toLowerCase().includes(query) ||
+                    p.abstract.toLowerCase().includes(query) ||
+                    p.authors.join(' ').toLowerCase().includes(query)
+                );
+            }
+
+            renderPapers(filtered);
+        }
+
+        function renderPapers(papers) {
+            const container = document.getElementById('paperList');
+            const countEl = document.getElementById('paperCount');
+
+            if (papers.length === 0) {
+                container.innerHTML = '<div class="empty-msg">No papers found matching your criteria.</div>';
+                countEl.textContent = '0 papers';
+                return;
+            }
+
+            countEl.textContent = `Showing ${papers.length} paper${papers.length > 1 ? 's' : ''}`;
+
+            container.innerHTML = papers.map(p => `
+        <article class="paper-card">
+          <h3 class="paper-card__title">
+            <a href="${p.id}" target="_blank" rel="noopener">${p.title}</a>
+          </h3>
+          <p class="paper-card__authors">${p.authors.join(', ')}</p>
+          <p class="paper-card__date">📅 Published: ${p.published} · Updated: ${p.updated}</p>
+          <p class="paper-card__abstract" onclick="this.classList.toggle('expanded')">${p.abstract}</p>
+          <div class="paper-card__actions">
+            <a class="paper-card__link" href="${p.pdf_url}" target="_blank" rel="noopener">📥 PDF</a>
+            <a class="paper-card__link" href="${p.id}" target="_blank" rel="noopener">🔗 arXiv</a>
+            <span class="paper-card__keyword">${p.keyword}</span>
+          </div>
+        </article>
+      `).join('');
+        }
+
+        // ── Event listeners ──
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        // ── Kick off ──
+        init();
+    </script>
+
+</body>
+
+</html>

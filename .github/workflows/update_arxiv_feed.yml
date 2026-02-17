@@ -1,0 +1,37 @@
+name: Update arXiv Paper Feed
+
+on:
+  schedule:
+    # Run every day at midnight UTC
+    - cron: '0 0 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-papers:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r Problem_3_arxiv_fetching/requirements.txt
+
+      - name: Fetch latest arXiv papers
+        run: python Problem_3_arxiv_fetching/fetch_papers.py
+
+      - name: Commit and push updated papers
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Problem_1_Github_website/data/papers.json
+          git diff --cached --quiet || git commit -m "chore: auto-update arXiv paper feed [$(date -u +%Y-%m-%d)]"
+          git push

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="BST236 Homework 0 — Course setup and introductory exercises." />
+    <title>Homework 0 — BST236 Coding Blog</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">☰</button>
+
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header__title">BST236 Coding Blog</h1>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <ul class="sidebar__list">
+            <li>
+                <a href="index.html" class="sidebar__link">
+                    <span class="sidebar__icon">🏠</span> Home
+                </a>
+            </li>
+            <li>
+                <a href="hw0.html" class="sidebar__link active">
+                    <span class="sidebar__icon">📘</span> Homework 0
+                </a>
+            </li>
+            <li>
+                <a href="hw1.html" class="sidebar__link">
+                    <span class="sidebar__icon">📗</span> Homework 1
+                </a>
+            </li>
+            <!-- Add more homework links here as needed -->
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+        <div class="page-header">
+            <h2 class="page-header__title">📘 Homework 0</h2>
+            <p class="page-header__desc">Course setup, environment configuration, and introductory exercises.</p>
+            <a href="https://github.com/hsph-bst236-2026/homework-0-ytian820" target="_blank" class="card__link"
+                style="font-size: 1rem; margin-top: 0.5rem;">
+                View on GitHub ↗
+            </a>
+        </div>
+
+        <div class="prose">
+            <h3>Introduction</h3>
+            <p>
+                This repository contains a Python implementation of the Fibonacci sequence calculator with intentionally
+                introduced formatting issues and code style problems. The main purpose of this homework is to help you:
+            </p>
+            <ul>
+                <li>Get familiar with Github Classroom and our homework submission process.</li>
+                <li>Writing and fixing code with formatting and linting issues.</li>
+                <li>Using <code>pytest</code> for testing.</li>
+                <li>Get experience with GitHub Actions for automated workflow.</li>
+            </ul>
+
+            <h3>Installation</h3>
+            <p>1. From the terminal, clone the repository:</p>
+            <pre><code>git clone &lt;your-repo-url&gt;
+cd &lt;repo-name&gt;</code></pre>
+            <p>2. Install dependencies:</p>
+            <pre><code>pip install -r requirements.txt</code></pre>
+
+            <h3>Usage</h3>
+            <p>
+                The Fibonacci sequence is a series of numbers where each number is the sum of the two preceding ones,
+                usually starting with 0 and 1.
+                The function <code>fibonacci(n)</code> in this repository calculates the nth number in the Fibonacci
+                sequence.
+            </p>
+            <p>
+                You can get the nth number in the Fibonacci sequence by the terminal command
+                <code>python fibonacci.py &lt;n&gt;</code>.
+                For example, running the following command to get the 4th number in the Fibonacci sequence:
+            </p>
+            <pre><code>python3 fibonacci.py 4
+3</code></pre>
+
+            <h3>Report</h3>
+            <p>I ran the <code>pytest</code> command and got the following results:</p>
+            <pre><code>collected 3 items
+
+FAILED test_fibonacci.py::test_fibonacci_base_cases - assert 1 == 0
+FAILED test_fibonacci.py::test_fibonacci_positive_numbers - assert 4 == 3
+FAILED test_fibonacci.py::test_fibonacci_negative_input - Failed: DID NOT RAISE &lt;class 'ValueError'&gt;</code></pre>
+
+            <p>The failures were caused by incorrect implementation of the fibonacci function (incorrect update order of
+                variables) and lack of boundary case handling.</p>
+
+            <p><strong>Fixes Implemented:</strong></p>
+            <ol>
+                <li>Added input validation to raise a ValueError for negative inputs.</li>
+                <li>Explicitly handled the base cases n = 0 and n = 1.</li>
+                <li>Corrected the initialization and update logic of variables a and b.</li>
+            </ol>
+            <p>After these fixes, all tests passed successfully.</p>
+
+            <h3>Contributions</h3>
+            <p>Yuan Tian: Completing the homework</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2026 BST236 Coding Blog &middot; Built with ❤️ and AI
+    </footer>
+
+    <!-- Mobile sidebar toggle script -->
+    <script>
+        const toggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        toggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            toggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+        });
+    </script>
+
+</body>
+
+</html>
