@@ -31,24 +31,29 @@ This project consists primarily of static HTML, CSS, and JavaScript files.
 
 ## Usage
 
-You can run the projects directly by opening the HTML files in your browser.
+The website is deployed on GitHub Pages. Visit the live site at:
+
+👉 **[https://ytian820.github.io/bst236-code-blog/](https://ytian820.github.io/bst236-code-blog/)**
 
 ### 1. Coding Blog Website (Problem 1)
-Locate and open the `Problem_1_Github_website/index.html` file in your browser.
-
-*   **Homepage**: Displays an overview of assignments.
-*   **Navigation**: Use the sidebar to navigate between Home, Homework 0, and Homework 1.
+The homepage displays an overview of all course assignments. Use the **sidebar navigation** on the left to switch between pages (Home, Homework 0, Homework 1).
 
 ![Homepage](assets/homepage.png)
 
 ### 2. Pac-Man Game (Problem 2)
-To play the game, navigate to the **Homework 1** page on the website and click **"Play Now"**, or open `Problem_2_Pac_man/pacman.html` directly.
+Navigate to the **Homework 1** page and click **"Play Now"** on the Pac-Man card to launch the game.
 
 *   **Controls**: Use Arrow Keys (⬆️, ⬇️, ⬅️, ➡️) to move Pac-Man.
 *   **Objective**: Eat all dots and avoid the ghosts.
 *   **Special Feature**: Collect the "Rose" power-up to turn ghosts into edible hearts! 💘
 
 ![Pac-Man Gameplay](assets/pacman_gameplay.png)
+
+### 3. ArXiv Paper Feed (Problem 3)
+Navigate to the **Homework 1** page and click **"Browse Papers"** on the ArXiv Paper Feed card. The feed displays the latest papers on LLMs, Medical AI, and Agentic AI, and is auto-updated daily via GitHub Actions.
+
+*   **Filter by keyword**: Click the keyword badges (e.g., "Large language model") to filter papers by topic.
+*   **Search**: Use the search bar to search papers by title, author, or abstract.
 
 
 
@@ -84,10 +89,20 @@ During testing, I encountered a critical bug where ghosts would occasionally bec
 
 Overall, this problem demonstrated how agent-assisted development can support both rapid prototyping and structured debugging. Instead of generating the entire project in a single pass, I decomposed the implementation into modular steps: initial scaffolding, feature extension, and targeted debugging. This iterative workflow improved code clarity, preserved modularity, and made the system easier to reason about. The final game preserves the recognizable Pac-Man mechanics—maze navigation, pellet collection, ghost chasing, life tracking—while incorporating the Valentine-themed rose power-up and heart projectile system as a creative extension.
 
-### 5. Problem 3: ArXiv Paper Feed (Planned)
-*   **Strategy**: I plan to use **GitHub Actions** to schedule a daily script.
-*   **Tools**: `actions/checkout` and Python scripts using the `arxiv` API.
-*   **(Report to be updated upon completion)**
+### 5. Problem 3: ArXiv Paper Feed
+In this problem, I built an auto-updating arXiv paper feed that fetches the latest research papers on topics of interest and displays them on the website. The feed is refreshed daily via a GitHub Actions workflow, making it a fully automated data scaffolding pipeline. The development process involved three main components: a Python fetching script, a frontend display page, and a CI/CD automation workflow.
+
+I started by defining the research keywords I wanted to track: "Medical reasoning large language model," "Large language model," and "Agentic AI." I then asked the AI agent to generate a TODO.md outlining all the steps required to build the arXiv feed end-to-end. After reviewing and refining the plan, I instructed the agent to implement a Python script (`fetch_papers.py`) using the `arxiv` Python library. The script queries the arXiv API for each keyword, de-duplicates papers by their unique entry IDs, and saves the results to a JSON file (`data/papers.json`) that the frontend can consume.
+
+Next, I asked the agent to create the frontend page (`arxiv.html`). I specified that it should match the existing dark-themed design of the website and include interactive features such as keyword filter badges, a search bar for filtering by title/author/abstract, and expandable abstracts. The agent generated the complete HTML page with embedded CSS and JavaScript. I reviewed the output and iterated on the design until the page matched my expectations.
+
+For automation, I instructed the agent to create a GitHub Actions workflow (`.github/workflows/update_arxiv_feed.yml`) that runs daily at midnight UTC. The workflow checks out the repository, sets up Python, installs dependencies, runs the fetch script, and commits the updated `papers.json` back to the repository. I also enabled manual triggering via `workflow_dispatch` for on-demand updates.
+
+During testing, I encountered several issues that required iterative debugging with the AI agent. First, the page failed to load papers when opened directly via the `file://` protocol due to browser CORS restrictions on `fetch()` requests. The agent explained that this was expected behavior and that the issue would not exist when served via HTTP or deployed to GitHub Pages. Second, I noticed that clicking the "Large language model" filter badge showed zero papers. After investigating, the agent identified that the original arXiv query was too generic — all three keyword searches returned the same set of latest papers, and the de-duplication logic removed all duplicates from the second and third keywords. To fix this, the agent rewrote the search queries using arXiv's field-specific syntax (`ti:` for title, `abs:` for abstract) with `AND`/`OR` operators, ensuring each keyword retrieved distinct, relevant papers. After this fix, all three keywords returned 15 papers each (45 total).
+
+Finally, when deploying to GitHub Pages via a separate repository, I discovered that the website files were nested inside a `Problem_1_Github_website/` subfolder, which prevented GitHub Pages from finding the `index.html` at the repository root. I asked the agent to restructure the repository by moving all website files to the root level and updating all relative paths accordingly — including the Pac-Man link in `hw1.html`, the output path in `fetch_papers.py`, and the `git add` path in the GitHub Actions workflow.
+
+Overall, this problem demonstrated the full lifecycle of an agentic development workflow: from initial planning and implementation, through iterative debugging of API queries, browser security issues, and deployment configuration, to a fully automated daily-updating paper feed. The key takeaway was that effective AI-assisted development requires clear problem descriptions and an iterative feedback loop — when I provided specific bug reports (e.g., "the Large language model filter shows 0 papers"), the agent could quickly diagnose and resolve the root cause.
 
 ## Contributions
 *   **Yuan Tian**: Project setup, Website design, Pac-Man game implementation, and Report writing.
