@@ -1,11 +1,25 @@
 {
-  "last_updated": "2026-03-13 01:46 UTC",
+  "last_updated": "2026-03-14 01:44 UTC",
   "keywords": [
     "Medical reasoning LLM",
     "Large language model",
     "Agentic AI"
   ],
   "papers": [
+    {
+      "id": "http://arxiv.org/abs/2603.12206v1",
+      "title": "CLASP: Defending Hybrid Large Language Models Against Hidden State Poisoning Attacks",
+      "authors": [
+        "Alexandre Le Mercier",
+        "Thomas Demeester",
+        "Chris Develder"
+      ],
+      "abstract": "State space models (SSMs) like Mamba have gained significant traction as efficient alternatives to Transformers, achieving linear complexity while maintaining competitive performance. However, Hidden State Poisoning Attacks (HiSPAs), a recently discovered vulnerability that corrupts SSM memory through adversarial strings, pose a critical threat to these architectures and their hybrid variants. Framing the HiSPA mitigation task as a binary classification problem at the token level, we introduce the CLASP model to defend against this threat. CLASP exploits distinct patterns in Mamba's block output embeddings (BOEs) and uses an XGBoost classifier to identify malicious tokens with minimal computational overhead. We consider a realistic scenario in which both SSMs and HiSPAs are likely to be used: an LLM screening résumés to identify the best candidates for a role. Evaluated on a corpus of 2,483 résumés totaling 9.5M tokens with controlled injections, CLASP achieves 95.9% token-level F1 score and 99.3% document-level F1 score on malicious tokens detection. Crucially, the model generalizes to unseen attack patterns: under leave-one-out cross-validation, performance remains high (96.9% document-level F1), while under clustered cross-validation with structurally novel triggers, it maintains useful detection capability (91.6% average document-level F1). Operating independently of any downstream model, CLASP processes 1,032 tokens per second with under 4GB VRAM consumption, potentially making it suitable for real-world deployment as a lightweight front-line defense for SSM-based and hybrid architectures. All code and detailed results are available at https://anonymous.4open.science/r/hispikes-91C0.",
+      "published": "2026-03-12",
+      "updated": "2026-03-12",
+      "pdf_url": "https://arxiv.org/pdf/2603.12206v1",
+      "keyword": "Large language model"
+    },
     {
       "id": "http://arxiv.org/abs/2603.12105v1",
       "title": "To Words and Beyond: Probing Large Language Models for Sentence-Level Psycholinguistic Norms of Memorability and Reading Times",
@@ -239,6 +253,112 @@
       "keyword": "Large language model"
     },
     {
+      "id": "http://arxiv.org/abs/2603.12238v1",
+      "title": "SceneAssistant: A Visual Feedback Agent for Open-Vocabulary 3D Scene Generation",
+      "authors": [
+        "Jun Luo",
+        "Jiaxiang Tang",
+        "Ruijie Lu",
+        "Gang Zeng"
+      ],
+      "abstract": "Text-to-3D scene generation from natural language is highly desirable for digital content creation. However, existing methods are largely domain-restricted or reliant on predefined spatial relationships, limiting their capacity for unconstrained, open-vocabulary 3D scene synthesis. In this paper, we introduce SceneAssistant, a visual-feedback-driven agent designed for open-vocabulary 3D scene generation. Our framework leverages modern 3D object generation model along with the spatial reasoning and planning capabilities of Vision-Language Models (VLMs). To enable open-vocabulary scene composition, we provide the VLMs with a comprehensive set of atomic operations (e.g., Scale, Rotate, FocusOn). At each interaction step, the VLM receives rendered visual feedback and takes actions accordingly, iteratively refining the scene to achieve more coherent spatial arrangements and better alignment with the input text. Experimental results demonstrate that our method can generate diverse, open-vocabulary, and high-quality 3D scenes. Both qualitative analysis and quantitative human evaluations demonstrate the superiority of our approach over existing methods. Furthermore, our method allows users to instruct the agent to edit existing scenes based on natural language commands. Our code is available at https://github.com/ROUJINN/SceneAssistant",
+      "published": "2026-03-12",
+      "updated": "2026-03-12",
+      "pdf_url": "https://arxiv.org/pdf/2603.12238v1",
+      "keyword": "Agentic AI"
+    },
+    {
+      "id": "http://arxiv.org/abs/2603.12230v1",
+      "title": "Security Considerations for Artificial Intelligence Agents",
+      "authors": [
+        "Ninghui Li",
+        "Kaiyuan Zhang",
+        "Kyle Polley",
+        "Jerry Ma"
+      ],
+      "abstract": "This article, a lightly adapted version of Perplexity's response to NIST/CAISI Request for Information 2025-0035, details our observations and recommendations concerning the security of frontier AI agents. These insights are informed by Perplexity's experience operating general-purpose agentic systems used by millions of users and thousands of enterprises in both controlled and open-world environments. Agent architectures change core assumptions around code-data separation, authority boundaries, and execution predictability, creating new confidentiality, integrity, and availability failure modes. We map principal attack surfaces across tools, connectors, hosting boundaries, and multi-agent coordination, with particular emphasis on indirect prompt injection, confused-deputy behavior, and cascading failures in long-running workflows. We then assess current defenses as a layered stack: input-level and model-level mitigations, sandboxed execution, and deterministic policy enforcement for high-consequence actions. Finally, we identify standards and research gaps, including adaptive security benchmarks, policy models for delegation and privilege control, and guidance for secure multi-agent system design aligned with NIST risk management principles.",
+      "published": "2026-03-12",
+      "updated": "2026-03-12",
+      "pdf_url": "https://arxiv.org/pdf/2603.12230v1",
+      "keyword": "Agentic AI"
+    },
+    {
+      "id": "http://arxiv.org/abs/2603.12180v1",
+      "title": "Strategic Navigation or Stochastic Search? How Agents and Humans Reason Over Document Collections",
+      "authors": [
+        "Łukasz Borchmann",
+        "Jordy Van Landeghem",
+        "Michał Turski",
+        "Shreyansh Padarha",
+        "Ryan Othniel Kearns",
+        "Adam Mahdi",
+        "Niels Rogge",
+        "Clémentine Fourrier",
+        "Siwei Han",
+        "Huaxiu Yao",
+        "Artemis Llabrés",
+        "Yiming Xu",
+        "Dimosthenis Karatzas",
+        "Hao Zhang",
+        "Anupam Datta"
+      ],
+      "abstract": "Multimodal agents offer a promising path to automating complex document-intensive workflows. Yet, a critical question remains: do these agents demonstrate genuine strategic reasoning, or merely stochastic trial-and-error search? To address this, we introduce MADQA, a benchmark of 2,250 human-authored questions grounded in 800 heterogeneous PDF documents. Guided by Classical Test Theory, we design it to maximize discriminative power across varying levels of agentic abilities. To evaluate agentic behaviour, we introduce a novel evaluation protocol measuring the accuracy-effort trade-off. Using this framework, we show that while the best agents can match human searchers in raw accuracy, they succeed on largely different questions and rely on brute-force search to compensate for weak strategic planning. They fail to close the nearly 20% gap to oracle performance, persisting in unproductive loops. We release the dataset and evaluation harness to help facilitate the transition from brute-force retrieval to calibrated, efficient reasoning.",
+      "published": "2026-03-12",
+      "updated": "2026-03-12",
+      "pdf_url": "https://arxiv.org/pdf/2603.12180v1",
+      "keyword": "Agentic AI"
+    },
+    {
+      "id": "http://arxiv.org/abs/2603.12155v1",
+      "title": "GlyphBanana: Advancing Precise Text Rendering Through Agentic Workflows",
+      "authors": [
+        "Zexuan Yan",
+        "Jiarui Jin",
+        "Yue Ma",
+        "Shijian Wang",
+        "Jiahui Hu",
+        "Wenxiang Jiao",
+        "Yuan Lu",
+        "Linfeng Zhang"
+      ],
+      "abstract": "Despite recent advances in generative models driving significant progress in text rendering, accurately generating complex text and mathematical formulas remains a formidable challenge. This difficulty primarily stems from the limited instruction-following capabilities of current models when encountering out-of-distribution prompts. To address this, we introduce GlyphBanana, alongside a corresponding benchmark specifically designed for rendering complex characters and formulas. GlyphBanana employs an agentic workflow that integrates auxiliary tools to inject glyph templates into both the latent space and attention maps, facilitating the iterative refinement of generated images. Notably, our training-free approach can be seamlessly applied to various Text-to-Image (T2I) models, achieving superior precision compared to existing baselines. Extensive experiments demonstrate the effectiveness of our proposed workflow. Associated code is publicly available at https://github.com/yuriYanZeXuan/GlyphBanana.",
+      "published": "2026-03-12",
+      "updated": "2026-03-12",
+      "pdf_url": "https://arxiv.org/pdf/2603.12155v1",
+      "keyword": "Agentic AI"
+    },
+    {
+      "id": "http://arxiv.org/abs/2603.12138v1",
+      "title": "HATS: Hardness-Aware Trajectory Synthesis for GUI Agents",
+      "authors": [
+        "Rui Shao",
+        "Ruize Gao",
+        "Bin Xie",
+        "Yixing Li",
+        "Kaiwen Zhou",
+        "Shuai Wang",
+        "Weili Guan",
+        "Gongwei Chen"
+      ],
+      "abstract": "Graphical user interface (GUI) agents powered by large vision-language models (VLMs) have shown remarkable potential in automating digital tasks, highlighting the need for high-quality trajectory data to support effective agent training. Yet existing trajectory synthesis pipelines often yield agents that fail to generalize beyond simple interactions. We identify this limitation as stemming from the neglect of semantically ambiguous actions, whose meanings are context-dependent, sequentially dependent, or visually ambiguous. Such actions are crucial for real-world robustness but are under-represented and poorly processed in current datasets, leading to semantic misalignment between task instructions and execution. To address these issues, we propose HATS, a Hardness-Aware Trajectory Synthesis framework designed to mitigate the impact of semantic ambiguity. We define hardness as the degree of semantic ambiguity associated with an action and develop two complementary modules: (1) hardness-driven exploration, which guides data collection toward ambiguous yet informative interactions, and (2) alignment-guided refinement, which iteratively validates and repairs instruction-execution alignment. The two modules operate in a closed loop: exploration supplies refinement with challenging trajectories, while refinement feedback updates the hardness signal to guide future exploration. Extensive experiments show that agents trained with HATS consistently outperform state-of-the-art baselines across benchmark GUI environments.",
+      "published": "2026-03-12",
+      "updated": "2026-03-12",
+      "pdf_url": "https://arxiv.org/pdf/2603.12138v1",
+      "keyword": "Agentic AI"
+    },
+    {
+      "id": "http://arxiv.org/abs/2603.12129v1",
+      "title": "Increasing intelligence in AI agents can worsen collective outcomes",
+      "authors": [
+        "Neil F. Johnson"
+      ],
+      "abstract": "When resources are scarce, will a population of AI agents coordinate in harmony, or descend into tribal chaos? Diverse decision-making AI from different developers is entering everyday devices -- from phones and medical devices to battlefield drones and cars -- and these AI agents typically compete for finite shared resources such as charging slots, relay bandwidth, and traffic priority. Yet their collective dynamics and hence risks to users and society are poorly understood. Here we study AI-agent populations as the first system of real agents in which four key variables governing collective behaviour can be independently toggled: nature (innate LLM diversity), nurture (individual reinforcement learning), culture (emergent tribe formation), and resource scarcity. We show empirically and mathematically that when resources are scarce, AI model diversity and reinforcement learning increase dangerous system overload, though tribe formation lessens this risk. Meanwhile, some individuals profit handsomely. When resources are abundant, the same ingredients drive overload to near zero, though tribe formation makes the overload slightly worse. The crossover is arithmetical: it is where opposing tribes that form spontaneously first fit inside the available capacity. More sophisticated AI-agent populations are not better: whether their sophistication helps or harms depends entirely on a single number -- the capacity-to-population ratio -- that is knowable before any AI-agent ships.",
+      "published": "2026-03-12",
+      "updated": "2026-03-12",
+      "pdf_url": "https://arxiv.org/pdf/2603.12129v1",
+      "keyword": "Agentic AI"
+    },
+    {
       "id": "http://arxiv.org/abs/2603.12109v1",
       "title": "On Information Self-Locking in Reinforcement Learning for Active Reasoning of LLM agents",
       "authors": [
@@ -396,118 +516,6 @@
       "updated": "2026-03-12",
       "pdf_url": "https://arxiv.org/pdf/2603.11955v1",
       "keyword": "Agentic AI"
-    },
-    {
-      "id": "http://arxiv.org/abs/2603.11927v1",
-      "title": "CogSearch: A Cognitive-Aligned Multi-Agent Framework for Proactive Decision Support in E-Commerce Search",
-      "authors": [
-        "Zhouwei Zhai",
-        "Mengxiang Chen",
-        "Haoyun Xia",
-        "Jin Li",
-        "Renquan Zhou",
-        "Min Yang"
-      ],
-      "abstract": "Modern e-commerce search engines, largely rooted in passive retrieval-and-ranking models, frequently fail to support complex decision-making, leaving users overwhelmed by cognitive friction. In this paper, we introduce CogSearch, a novel cognitive-oriented multi-agent framework that reimagines e-commerce search as a proactive decision support system. By synergizing four specialized agents, CogSearch mimics human cognitive workflows: it decomposes intricate user intents, fuses heterogeneous knowledge across internal and external sources, and delivers highly actionable insights. Our offline benchmarks validate CogSearch's excellence in consultative and complex search scenarios. Extensive online A/B testing on JD.com demonstrates the system's transformative impact: it reduced decision costs by 5% and achieved a 0.41% increase in overall UCVR, with a remarkable 30% surge in conversion for decision-heavy queries. CogSearch represents a fundamental shift in information retrieval, moving beyond traditional relevance-centric paradigms toward a future of holistic, collaborative decision intelligence.",
-      "published": "2026-03-12",
-      "updated": "2026-03-12",
-      "pdf_url": "https://arxiv.org/pdf/2603.11927v1",
-      "keyword": "Agentic AI"
-    },
-    {
-      "id": "http://arxiv.org/abs/2603.11890v1",
-      "title": "QUARE: Multi-Agent Negotiation for Balancing Quality Attributes in Requirements Engineering",
-      "authors": [
-        "Haowei Cheng",
-        "Milhan Kim",
-        "Foutse Khomh",
-        "Teeradaj Racharak",
-        "Nobukazu Yoshioka",
-        "Naoyasu Ubayashi",
-        "Hironori Washizaki"
-      ],
-      "abstract": "Requirements engineering (RE) is critical to software success, yet automating it remains challenging because multiple, often conflicting quality attributes must be balanced while preserving stakeholder intent. Existing Large-Language-Model (LLM) approaches predominantly rely on monolithic reasoning or implicit aggregation, limiting their ability to systematically surface and resolve cross-quality conflicts. We present QUARE (Quality-Aware Requirements Engineering), a multi-agent framework that formulates requirements analysis as structured negotiation among five quality-specialized agents (Safety, Efficiency, Green, Trustworthiness, and Responsibility), coordinated by a dedicated orchestrator. QUARE introduces a dialectical negotiation protocol that explicitly exposes inter-quality conflicts and resolves them through iterative proposal, critique, and synthesis. Negotiated outcomes are transformed into structurally sound KAOS goal models via topology validation and verified against industry standards through retrieval-augmented generation (RAG). We evaluate QUARE on five case studies drawn from established RE benchmarks (MARE, iReDev) and an industrial autonomous-driving specification, spanning safety-critical, financial, and information-system domains. Results show that QUARE achieves 98.2% compliance coverage (+105% over both baselines), 94.9% semantic preservation (+2.3 percentage points over the best baseline), and high verifiability (4.96/5.0), while generating 25-43% more requirements than existing multi-agent RE frameworks. These findings suggest that effective RE automation depends less on model scale than on principled architectural decomposition, explicit interaction protocols, and automated verification.",
-      "published": "2026-03-12",
-      "updated": "2026-03-12",
-      "pdf_url": "https://arxiv.org/pdf/2603.11890v1",
-      "keyword": "Agentic AI"
-    },
-    {
-      "id": "http://arxiv.org/abs/2603.11884v1",
-      "title": "The price of decentralization in managing engineering systems through multi-agent reinforcement learning",
-      "authors": [
-        "Prateek Bhustali",
-        "Pablo G. Morato",
-        "Konstantinos G. Papakonstantinou",
-        "Charalampos P. Andriotis"
-      ],
-      "abstract": "Inspection and maintenance (I&M) planning involves sequential decision making under uncertainties and incomplete information, and can be modeled as a partially observable Markov decision process (POMDP). While single-agent deep reinforcement learning provides approximate solutions to POMDPs, it does not scale well in multi-component systems. Scalability can be achieved through multi-agent deep reinforcement learning (MADRL), which decentralizes decision-making across multiple agents, locally controlling individual components. However, this decentralization can induce cooperation pathologies that degrade the optimality of the learned policies. To examine these effects in I&M planning, we introduce a set of deteriorating systems in which redundancy is varied systematically. These benchmark environments are designed such that computation of centralized (near-)optimal policies remains tractable, enabling direct comparison of solution methods. We implement and benchmark a broad set of MADRL algorithms spanning fully centralized and decentralized training paradigms, from value-factorization to actor-critic methods. Our results show a clear effect of redundancy on coordination: MADRL algorithms achieve near-optimal performance in series-like settings, whereas increasing redundancy amplifies coordination challenges and can lead to optimality losses. Nonetheless, decentralized agents learn structured policies that consistently outperform optimized heuristic baselines, highlighting both the promise and current limitations of decentralized learning for scalable maintenance planning.",
-      "published": "2026-03-12",
-      "updated": "2026-03-12",
-      "pdf_url": "https://arxiv.org/pdf/2603.11884v1",
-      "keyword": "Agentic AI"
-    },
-    {
-      "id": "http://arxiv.org/abs/2603.11872v1",
-      "title": "ELISA: An Interpretable Hybrid Generative AI Agent for Expression-Grounded Discovery in Single-Cell Genomics",
-      "authors": [
-        "Omar Coser"
-      ],
-      "abstract": "Translating single-cell RNA sequencing (scRNA-seq) data into mechanistic biological hypotheses remains a critical bottleneck, as agentic AI systems lack direct access to transcriptomic representations while expression foundation models remain opaque to natural language. Here we introduce ELISA (Embedding-Linked Interactive Single-cell Agent), an interpretable framework that unifies scGPT expression embeddings with BioBERT-based semantic retrieval and LLM-mediated interpretation for interactive single-cell discovery. An automatic query classifier routes inputs to gene marker scoring, semantic matching, or reciprocal rank fusion pipelines depending on whether the query is a gene signature, natural language concept, or mixture of both. Integrated analytical modules perform pathway activity scoringacross 60+ gene sets, ligand--receptor interaction prediction using 280+ curated pairs, condition-aware comparative analysis, and cell-type proportion estimation all operating directly on embedded data without access to the original count matrix. Benchmarked across six diverse scRNA-seq datasets spanning inflammatory lung disease, pediatric and adult cancers, organoid models, healthy tissue, and neurodevelopment, ELISA significantly outperforms CellWhisperer in cell type retrieval (combined permutation test, $p < 0.001$), with particularly large gains on gene-signature queries (Cohen's $d = 5.98$ for MRR). ELISA replicates published biological findings (mean composite score 0.90) with near-perfect pathway alignment and theme coverage (0.98 each), and generates candidate hypotheses through grounded LLM reasoning, bridging the gap between transcriptomic data exploration and biological discovery. Code available at: https://github.com/omaruno/ELISA-An-AI-Agent-for-Expression-Grounded-Discovery-in-Single-Cell-Genomics.git (If you use ELISA in your research, please cite this work).",
-      "published": "2026-03-12",
-      "updated": "2026-03-12",
-      "pdf_url": "https://arxiv.org/pdf/2603.11872v1",
-      "keyword": "Agentic AI"
-    },
-    {
-      "id": "http://arxiv.org/abs/2603.11866v1",
-      "title": "Derain-Agent: A Plug-and-Play Agent Framework for Rainy Image Restoration",
-      "authors": [
-        "Zhaocheng Yu",
-        "Xiang Chen",
-        "Runzhe Li",
-        "Zihan Geng",
-        "Guanglu Sun",
-        "Haipeng Li",
-        "Kui Jiang"
-      ],
-      "abstract": "While deep learning has advanced single-image deraining, existing models suffer from a fundamental limitation: they employ a static inference paradigm that fails to adapt to the complex, coupled degradations (e.g., noise artifacts, blur, and color deviation) of real-world rain. Consequently, restored images often exhibit residual artifacts and inconsistent perceptual quality. In this work, we present Derain-Agent, a plug-and-play refinement framework that transitions deraining from static processing to dynamic, agent-based restoration. Derain-Agent equips a base deraining model with two core capabilities: 1) a Planning Network that intelligently schedules an optimal sequence of restoration tools for each instance, and 2) a Strength Modulation mechanism that applies these tools with spatially adaptive intensity. This design enables precise, region-specific correction of residual errors without the prohibitive cost of iterative search. Our method demonstrates strong generalization, consistently boosting the performance of state-of-the-art deraining models on both synthetic and real-world benchmarks.",
-      "published": "2026-03-12",
-      "updated": "2026-03-12",
-      "pdf_url": "https://arxiv.org/pdf/2603.11866v1",
-      "keyword": "Agentic AI"
-    },
-    {
-      "id": "http://arxiv.org/abs/2603.11864v1",
-      "title": "Social, Legal, Ethical, Empathetic and Cultural Norm Operationalisation for AI Agents",
-      "authors": [
-        "Radu Calinescu",
-        "Ana Cavalcanti",
-        "Marsha Chechik",
-        "Lina Marsso",
-        "Beverley Townsend"
-      ],
-      "abstract": "As AI agents are increasingly used in high-stakes domains like healthcare and law enforcement, aligning their behaviour with social, legal, ethical, empathetic, and cultural (SLEEC) norms has become a critical engineering challenge. While international frameworks have established high-level normative principles for AI, a significant gap remains in translating these abstract principles into concrete, verifiable requirements. To address this gap, we propose a systematic SLEEC-norm operationalisation process for determining, validating, implementing, and verifying normative requirements. Furthermore, we survey the landscape of methods and tools supporting this process, and identify key remaining challenges and research avenues for addressing them. We thus establish a framework - and define a research and policy agenda - for developing AI agents that are not only functionally useful but also demonstrably aligned with human norms and values.",
-      "published": "2026-03-12",
-      "updated": "2026-03-12",
-      "pdf_url": "https://arxiv.org/pdf/2603.11864v1",
-      "keyword": "Agentic AI"
-    },
-    {
-      "id": "http://arxiv.org/abs/2603.11351v1",
-      "title": "Novelty Adaptation Through Hybrid Large Language Model (LLM)-Symbolic Planning and LLM-guided Reinforcement Learning",
-      "authors": [
-        "Hong Lu",
-        "Pierrick Lorang",
-        "Timothy R. Duggan",
-        "Jivko Sinapov",
-        "Matthias Scheutz"
-      ],
-      "abstract": "In dynamic open-world environments, autonomous agents often encounter novelties that hinder their ability to find plans to achieve their goals. Specifically, traditional symbolic planners fail to generate plans when the robot's planning domain lacks the operators that enable it to interact appropriately with novel objects in the environment. We propose a neuro-symbolic architecture that integrates symbolic planning, reinforcement learning, and a large language model (LLM) to learn how to handle novel objects. In particular, we leverage the common sense reasoning capability of the LLM to identify missing operators, generate plans with the symbolic AI planner, and write reward functions to guide the reinforcement learning agent in learning control policies for newly identified operators. Our method outperforms the state-of-the-art methods in operator discovery as well as operator learning in continuous robotic domains.",
-      "published": "2026-03-11",
-      "updated": "2026-03-11",
-      "pdf_url": "https://arxiv.org/pdf/2603.11351v1",
-      "keyword": "Large language model"
     },
     {
       "id": "http://arxiv.org/abs/2603.08987v1",
