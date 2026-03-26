@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Tutorial: Building an AI Workflow That Writes Research Papers — BST236 Midterm Project" />
+  <title>Midterm Tutorial — BST236 Coding Blog</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Tutorial-specific styles */
+    .tutorial { max-width: 860px; }
+    .tutorial h2 {
+      font-size: 1.6rem; font-weight: 700; margin: 2.5rem 0 1rem;
+      padding-bottom: 0.5rem; border-bottom: 2px solid var(--color-border);
+      color: var(--color-text);
+    }
+    .tutorial h3 {
+      font-size: 1.2rem; font-weight: 600; margin: 1.8rem 0 0.75rem;
+      color: var(--color-primary-light);
+    }
+    .tutorial h4 {
+      font-size: 1.05rem; font-weight: 600; margin: 1.2rem 0 0.5rem;
+      color: var(--color-accent);
+    }
+    .tutorial p, .tutorial li {
+      color: var(--color-text-muted); line-height: 1.8; margin-bottom: 0.8rem;
+    }
+    .tutorial ul, .tutorial ol { margin-left: 1.5rem; margin-bottom: 1rem; }
+    .tutorial li { margin-bottom: 0.4rem; }
+    .tutorial strong { color: var(--color-text); }
+    .tutorial em { color: var(--color-primary-light); font-style: italic; }
+    .tutorial a { color: var(--color-link); }
+    .tutorial a:hover { color: var(--color-link-hover); }
+    .tutorial blockquote {
+      border-left: 3px solid var(--color-primary); margin: 1.5rem 0;
+      padding: 0.75rem 1.25rem; background: rgba(99,102,241,0.06);
+      border-radius: 0 var(--radius) var(--radius) 0;
+    }
+    .tutorial blockquote p { margin-bottom: 0; color: var(--color-text); }
+
+    /* Code blocks */
+    .tutorial pre {
+      background: #0d1117; border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: 1.25rem; margin: 1rem 0 1.5rem;
+      overflow-x: auto; font-family: var(--font-mono); font-size: 0.85rem;
+      line-height: 1.6; color: #c9d1d9;
+    }
+    .tutorial code {
+      font-family: var(--font-mono); font-size: 0.85rem;
+      background: rgba(99,102,241,0.12); padding: 0.15rem 0.4rem;
+      border-radius: 4px; color: var(--color-accent);
+    }
+    .tutorial pre code {
+      background: none; padding: 0; color: inherit;
+    }
+
+    /* Tables */
+    .tutorial table {
+      width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem;
+      font-size: 0.9rem;
+    }
+    .tutorial th {
+      background: var(--color-bg-secondary); color: var(--color-primary-light);
+      padding: 0.75rem 1rem; text-align: left; font-weight: 600;
+      border-bottom: 2px solid var(--color-primary);
+    }
+    .tutorial td {
+      padding: 0.6rem 1rem; border-bottom: 1px solid var(--color-border);
+      color: var(--color-text-muted);
+    }
+    .tutorial tr:hover td { background: rgba(99,102,241,0.04); }
+
+    /* Architecture diagram */
+    .arch-box {
+      background: #0d1117; border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0;
+      font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8;
+      color: #c9d1d9; white-space: pre; overflow-x: auto;
+    }
+    .arch-box .layer-label { color: var(--color-accent); font-weight: 600; }
+    .arch-box .layer-desc { color: var(--color-text-muted); }
+    .arch-box .file-path { color: var(--color-primary-light); }
+
+    /* Pipeline flow */
+    .pipeline {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+      margin: 1.5rem 0; padding: 1rem; background: var(--color-card);
+      border-radius: var(--radius); border: 1px solid var(--color-border);
+    }
+    .pipeline-step {
+      background: var(--color-primary); color: #fff; padding: 0.4rem 0.8rem;
+      border-radius: 6px; font-size: 0.8rem; font-weight: 600;
+    }
+    .pipeline-arrow { color: var(--color-accent); font-size: 1.2rem; }
+
+    /* Highlight box */
+    .highlight-box {
+      background: rgba(34,211,238,0.08); border: 1px solid rgba(34,211,238,0.2);
+      border-radius: var(--radius); padding: 1.25rem; margin: 1.5rem 0;
+    }
+    .highlight-box p { margin-bottom: 0; }
+
+    /* Tip box */
+    .tip-box {
+      background: rgba(99,102,241,0.08); border-left: 3px solid var(--color-primary);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1rem 1.25rem; margin: 1.5rem 0;
+    }
+    .tip-box strong { color: var(--color-primary-light); }
+
+    /* Video embed */
+    .video-container {
+      margin: 1.5rem 0; border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--color-border);
+    }
+    .video-container video { width: 100%; display: block; }
+
+    /* TOC */
+    .toc {
+      background: var(--color-card); border: 1px solid var(--color-border);
+      border-radius: var(--radius); padding: 1.5rem 2rem; margin: 1.5rem 0;
+    }
+    .toc h3 { margin-top: 0; color: var(--color-text); }
+    .toc ol { margin-left: 1.5rem; }
+    .toc li { margin-bottom: 0.3rem; }
+    .toc a { color: var(--color-link); font-size: 0.95rem; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Mobile Menu Toggle -->
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">&#9776;</button>
+
+  <!-- Header -->
+  <header class="header">
+    <h1 class="header__title">BST236 Coding Blog</h1>
+  </header>
+
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" id="sidebar">
+    <ul class="sidebar__list">
+      <li><a href="index.html" class="sidebar__link"><span class="sidebar__icon">&#127968;</span> Home</a></li>
+      <li><a href="hw0.html" class="sidebar__link"><span class="sidebar__icon">&#128216;</span> Homework 0</a></li>
+      <li><a href="hw1.html" class="sidebar__link"><span class="sidebar__icon">&#128215;</span> Homework 1</a></li>
+      <li><a href="midterm.html" class="sidebar__link active"><span class="sidebar__icon">&#128196;</span> Midterm Tutorial</a></li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="content">
+    <div class="page-header">
+      <h2 class="page-header__title">&#128196; Midterm: AI Workflow Tutorial</h2>
+      <p class="page-header__desc">A step-by-step guide to building an automated system that generates JAMA Network Open research papers from any dataset.</p>
+    </div>
+
+    <div class="tutorial">
+
+      <!-- Intro -->
+      <div class="highlight-box">
+        <p><strong>What we built:</strong> Type <code>/write-a-paper-using-the-data-in-the-folder</code> and get a publication-ready JAMA paper in under 90 minutes &mdash; with zero human intervention. This tutorial teaches you how.</p>
+      </div>
+
+      <!-- TOC -->
+      <div class="toc">
+        <h3>Table of Contents</h3>
+        <ol>
+          <li><a href="#big-picture">The Big Picture</a></li>
+          <li><a href="#prerequisites">Prerequisites</a></li>
+          <li><a href="#building-blocks">Understanding Claude Code's Building Blocks</a></li>
+          <li><a href="#design-pipeline">Step 1: Design the Pipeline</a></li>
+          <li><a href="#write-skills">Step 2: Write the Skills</a></li>
+          <li><a href="#build-tools">Step 3: Build the Workflow Tools</a></li>
+          <li><a href="#write-command">Step 4: Write the Slash Command</a></li>
+          <li><a href="#configure">Step 5: Configure the Project</a></li>
+          <li><a href="#run">Running the Workflow End-to-End</a></li>
+          <li><a href="#principles">Design Principles</a></li>
+          <li><a href="#bonus">Bonus: Post-Paper Products</a></li>
+          <li><a href="#troubleshooting">Troubleshooting</a></li>
+        </ol>
+      </div>
+
+      <!-- Section 1 -->
+      <h2 id="big-picture">1. The Big Picture</h2>
+      <p>Our workflow has three layers that work together:</p>
+
+      <div class="arch-box"><span class="layer-label">SLASH COMMAND</span>       <span class="layer-desc">The Orchestrator &mdash; defines the pipeline</span>
+  <span class="file-path">.claude/commands/write-a-paper-...md</span>
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+<span class="layer-label">AI SKILLS</span>            <span class="layer-desc">Domain Knowledge &mdash; teaches AI HOW to work</span>
+  <span class="file-path">jama-writing.md   data-analysis.md   latex-build.md</span>
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+<span class="layer-label">WORKFLOW TOOLS</span>        <span class="layer-desc">Execution Layer &mdash; Python scripts that DO things</span>
+  <span class="file-path">data_profiler.py   latex_builder.py</span></div>
+
+      <p>Think of it like a restaurant: the <strong>slash command</strong> is the head chef's recipe, the <strong>skills</strong> are the chef's training, and the <strong>tools</strong> are the kitchen equipment.</p>
+
+      <p>The end-to-end pipeline:</p>
+      <div class="pipeline">
+        <span class="pipeline-step">Raw Data</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">1. Profile</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">2. Research Q</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">3. Analyze</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">4. Write</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">5. Compile</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">6. QA</span>
+        <span class="pipeline-arrow">&rarr;</span>
+        <span class="pipeline-step">paper.pdf</span>
+      </div>
+
+      <!-- Section 2 -->
+      <h2 id="prerequisites">2. Prerequisites</h2>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Why</th><th>Install</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Claude Code</strong></td><td>AI agent that runs the workflow</td><td><code>npm install -g @anthropic-ai/claude-code</code></td></tr>
+          <tr><td><strong>Python 3.11+</strong></td><td>Data analysis &amp; visualization</td><td><code>conda create -n research python=3.11</code></td></tr>
+          <tr><td><strong>LaTeX</strong></td><td>Paper compilation</td><td><code>brew install --cask mactex</code></td></tr>
+          <tr><td><strong>Python packages</strong></td><td>Stats &amp; plotting</td><td><code>pip install pandas matplotlib seaborn scipy statsmodels</code></td></tr>
+        </tbody>
+      </table>
+
+      <!-- Section 3 -->
+      <h2 id="building-blocks">3. Understanding Claude Code's Building Blocks</h2>
+
+      <h3>3.1 Claude Code</h3>
+      <p>Claude Code is Anthropic's AI coding agent. Unlike regular Claude, it runs <strong>in your terminal</strong> and can read/write files, execute scripts, and call external APIs &mdash; all orchestrated by natural language.</p>
+
+      <h3>3.2 Skills: Teaching AI Domain Knowledge</h3>
+      <p>Skills are <strong>markdown files</strong> in <code>.claude/skills/</code> that give the AI domain expertise. Think of them as giving a new team member a set of reference documents before they start a job.</p>
+      <pre><code>.claude/skills/
+&#x251C;&#x2500;&#x2500; jama-writing.md      # "Here's how to write a JAMA paper"
+&#x251C;&#x2500;&#x2500; data-analysis.md     # "Here's how to pick statistical methods"
+&#x2514;&#x2500;&#x2500; latex-build.md       # "Here's how to compile LaTeX"</code></pre>
+
+      <div class="tip-box">
+        <p><strong>Why skills beat prompts:</strong> Skills are persistent (loaded every time), modular (update independently), and testable. This is far more reliable than cramming instructions into a single prompt.</p>
+      </div>
+
+      <h3>3.3 Commands: Multi-Step Workflows</h3>
+      <p>Commands in <code>.claude/commands/</code> define entire pipelines. When you type <code>/command-name</code>, Claude reads the file and executes each step autonomously.</p>
+
+      <h3>3.4 MCP: External API Access</h3>
+      <p><strong>Model Context Protocol</strong> lets Claude call external APIs directly. We use <strong>PubMed MCP</strong> to search papers and fetch citation metadata &mdash; ensuring <em>zero hallucinated references</em>.</p>
+
+      <!-- Section 4 -->
+      <h2 id="design-pipeline">4. Step 1: Design the Pipeline</h2>
+      <p>Before writing code, plan your stages carefully:</p>
+      <table>
+        <thead>
+          <tr><th>Stage</th><th>Input</th><th>Output</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>0. Setup</strong></td><td>&mdash;</td><td>Domain knowledge loaded</td></tr>
+          <tr><td><strong>1. Data Discovery</strong></td><td>Raw data files</td><td><code>data_profile.json</code></td></tr>
+          <tr><td><strong>2. Research Question</strong></td><td>Data profile</td><td><code>research_question.md</code></td></tr>
+          <tr><td><strong>3. Analysis</strong></td><td>Cleaned data</td><td><code>analysis_report.json</code>, figures/</td></tr>
+          <tr><td><strong>4. Paper Writing</strong></td><td>All outputs</td><td><code>paper.tex</code>, <code>references.bib</code></td></tr>
+          <tr><td><strong>5. Compilation</strong></td><td>LaTeX source</td><td><code>paper.pdf</code></td></tr>
+          <tr><td><strong>6. Quality Check</strong></td><td>Final PDF</td><td>Verified paper</td></tr>
+        </tbody>
+      </table>
+
+      <div class="tip-box">
+        <p><strong>Key principle:</strong> Make each stage produce a concrete artifact. If something goes wrong at Stage 4, you can inspect Stage 3's JSON output without re-running everything.</p>
+      </div>
+
+      <!-- Section 5 -->
+      <h2 id="write-skills">5. Step 2: Write the Skills</h2>
+      <p>Skills are the most important part. They make the AI produce <strong>consistent, high-quality</strong> output.</p>
+
+      <h3>5.1 JAMA Writing Skill</h3>
+      <pre><code># JAMA Network Open Writing Guide
+
+## Section Structure (exact order)
+1. Title (descriptive, includes study design)
+2. Abstract (structured: Importance, Objective, Design, Exposure,
+   Main Outcomes, Results, Conclusions)
+3. Key Points (Question, Findings, Meaning)
+4. Introduction (3-5 paragraphs)
+5. Methods, 6. Results, 7. Discussion, 8. Limitations, 9. Conclusions
+10. References (Vancouver style, minimum 8 sources)
+
+## Writing Rules
+- Use "associated with" &mdash; NEVER "caused" or "led to"
+- Report effect sizes with 95% CIs
+- P-values as exact values: "P = .003" not "P &lt; .05"
+- Table 1 is ALWAYS descriptive statistics</code></pre>
+
+      <h3>5.2 Data Analysis Skill</h3>
+      <pre><code># Statistical Analysis Guide
+
+## Method Selection
+| Data Pattern          | Recommended Method       |
+|-----------------------|--------------------------|
+| Binary outcome        | Logistic regression      |
+| Continuous outcome    | Linear regression        |
+| Count data            | Poisson / Neg. binomial  |
+| Policy evaluation     | Difference-in-differences|
+| Time trends           | Interrupted time series  |
+
+## Key Principle
+Let the DATA drive method selection, not a predetermined script.</code></pre>
+
+      <h3>5.3 LaTeX Build Skill</h3>
+      <pre><code># LaTeX Compilation Guide
+
+## Build Sequence
+1. pdflatex paper.tex  (pass 1)
+2. bibtex paper        (resolve references)
+3. pdflatex paper.tex  (pass 2)
+4. pdflatex paper.tex  (pass 3)
+
+## Common Fixes
+- Unescaped _  &rarr;  \_
+- Missing $   &rarr;  Wrap math in $...$
+- File not found  &rarr;  Check figure paths</code></pre>
+
+      <h4>How to Write Effective Skills</h4>
+      <ol>
+        <li><strong>Be specific:</strong> "binary outcome &rarr; logistic regression" not "use appropriate methods"</li>
+        <li><strong>Use tables and checklists:</strong> The AI follows structured formats more reliably</li>
+        <li><strong>Include examples:</strong> Show what good output looks like</li>
+        <li><strong>Anticipate errors:</strong> List common mistakes and fixes</li>
+        <li><strong>One skill per domain:</strong> Don't mix writing advice with stats guidance</li>
+      </ol>
+
+      <!-- Section 6 -->
+      <h2 id="build-tools">6. Step 3: Build the Workflow Tools</h2>
+
+      <h3>6.1 Data Profiler</h3>
+      <p>Automatically discovers and profiles any dataset in a directory:</p>
+      <pre><code>"""data_profiler.py &mdash; discovers and profiles datasets"""
+import pandas as pd, json, os, sys
+
+def profile_directory(data_dir):
+    profile = {"files": []}
+    for root, dirs, files in os.walk(data_dir):
+        for fname in files:
+            fpath = os.path.join(root, fname)
+            ext = os.path.splitext(fname)[1].lower()
+            if ext in ('.csv', '.xlsx'):
+                df = pd.read_csv(fpath) if ext == '.csv' else pd.read_excel(fpath)
+                profile["files"].append({
+                    "file": fname, "shape": list(df.shape),
+                    "columns": list(df.columns),
+                    "dtypes": {c: str(df[c].dtype) for c in df.columns},
+                    "missing": {c: int(df[c].isna().sum()) for c in df.columns},
+                })
+            elif ext in ('.txt', '.md'):
+                with open(fpath) as f: content = f.read()
+                profile["files"].append({
+                    "file": fname, "type": "text",
+                    "preview": content[:5000]
+                })
+    return profile
+
+if __name__ == "__main__":
+    result = profile_directory(sys.argv[1])
+    out = sys.argv[2] if len(sys.argv) > 2 else "data_profile.json"
+    json.dump(result, open(out, 'w'), indent=2, default=str)
+    print(f"Profiled {len(result['files'])} files")</code></pre>
+
+      <h3>6.2 LaTeX Builder</h3>
+      <p>Multi-pass compilation with error diagnostics:</p>
+      <pre><code>"""latex_builder.py &mdash; compiles .tex to .pdf"""
+import subprocess, os, sys
+
+def build_pdf(tex_path):
+    tex_dir = os.path.dirname(os.path.abspath(tex_path))
+    tex_name = os.path.splitext(os.path.basename(tex_path))[0]
+
+    for cmd in [
+        ["pdflatex", "-interaction=nonstopmode", tex_name],
+        ["bibtex", tex_name],
+        ["pdflatex", "-interaction=nonstopmode", tex_name],
+        ["pdflatex", "-interaction=nonstopmode", tex_name],
+    ]:
+        subprocess.run(cmd, cwd=tex_dir, capture_output=True)
+
+    pdf = os.path.join(tex_dir, f"{tex_name}.pdf")
+    print("Success!" if os.path.exists(pdf) else "Error: PDF not generated")
+
+if __name__ == "__main__":
+    build_pdf(sys.argv[1])</code></pre>
+
+      <div class="tip-box">
+        <p><strong>Why generic tools?</strong> Both scripts are dataset-agnostic. The same tools handle completely different research topics without modification.</p>
+      </div>
+
+      <!-- Section 7 -->
+      <h2 id="write-command">7. Step 4: Write the Slash Command</h2>
+      <p>The slash command is the heart of the workflow &mdash; a markdown file defining every step:</p>
+      <pre><code># .claude/commands/write-a-paper-using-the-data-in-the-folder.md
+
+## Stage 0: Setup
+Read skill files: jama-writing.md, data-analysis.md, latex-build.md
+Create: exam_paper/figures/, exam_paper/tables/
+
+## Stage 1: Data Discovery
+Run: python workflow/data_profiler.py &lt;data_dir&gt; -o exam_paper/data_profile.json
+
+## Stage 2: Research Question
+Identify exposure, outcome, population, time frame.
+Formulate: "Is [exposure] associated with [outcome] among [population]?"
+Save: exam_paper/research_question.md
+
+## Stage 3: Analysis
+Select method based on data structure (follow data-analysis skill).
+Create Table 1, run primary analysis, generate &ge;2 figures at 300 DPI.
+Save: analysis_report.json, figures/, tables/
+
+## Stage 4: Paper Writing
+Copy template.tex &rarr; paper.tex. Fill every section (jama-writing skill).
+Search PubMed for 8-12 real references. NEVER fabricate statistics.
+Save: paper.tex, references.bib
+
+## Stage 5: Compile
+Run: python workflow/latex_builder.py exam_paper/paper.tex
+
+## Stage 6: Quality Check
+&check; PDF exists  &check; &le;10 pages  &check; No placeholders
+&check; &ge;2 figures  &check; Real references  &check; All CIs reported</code></pre>
+
+      <h4>Command Design Tips</h4>
+      <ol>
+        <li>Be explicit about inputs and outputs at each stage</li>
+        <li>Include fallback data paths (data might be in different locations)</li>
+        <li>Specify file formats: "Save as PDF and PNG at 300 DPI"</li>
+        <li>Add quality gates at the end to catch errors</li>
+        <li>Reference skill files at the top so they load first</li>
+      </ol>
+
+      <!-- Section 8 -->
+      <h2 id="configure">8. Step 5: Configure the Project</h2>
+      <pre><code>your-project/
+&#x251C;&#x2500;&#x2500; .claude/
+&#x2502;   &#x251C;&#x2500;&#x2500; commands/
+&#x2502;   &#x2502;   &#x2514;&#x2500;&#x2500; write-a-paper-using-the-data-in-the-folder.md
+&#x2502;   &#x2514;&#x2500;&#x2500; skills/
+&#x2502;       &#x251C;&#x2500;&#x2500; jama-writing.md
+&#x2502;       &#x251C;&#x2500;&#x2500; data-analysis.md
+&#x2502;       &#x2514;&#x2500;&#x2500; latex-build.md
+&#x251C;&#x2500;&#x2500; workflow/
+&#x2502;   &#x251C;&#x2500;&#x2500; data_profiler.py
+&#x2502;   &#x251C;&#x2500;&#x2500; latex_builder.py
+&#x2502;   &#x2514;&#x2500;&#x2500; templates/
+&#x251C;&#x2500;&#x2500; exam_paper/
+&#x2502;   &#x2514;&#x2500;&#x2500; data/          &larr; drop your dataset here
+&#x251C;&#x2500;&#x2500; CLAUDE.md
+&#x2514;&#x2500;&#x2500; Readme.md</code></pre>
+
+      <p>The <code>CLAUDE.md</code> file provides project-level instructions that Claude Code reads automatically:</p>
+      <pre><code># CLAUDE.md
+## Environment
+- Python: conda activate new_deep_learning (Python 3.11)
+- LaTeX: pdflatex and bibtex
+
+## Key Rules
+1. Never hardcode dataset-specific logic
+2. All outputs go to exam_paper/
+3. Figures: PDF + PNG at 300 DPI
+4. Page limit: &le;10 pages
+5. No fabrication: all numbers from actual analysis</code></pre>
+
+      <!-- Section 9 -->
+      <h2 id="run">9. Running the Workflow End-to-End</h2>
+      <pre><code># 1. Navigate to your project
+cd your-project/
+
+# 2. Place your data
+cp your-data/*.csv exam_paper/data/
+
+# 3. Start Claude Code (with full permissions)
+claude --dangerously-skip-permissions
+
+# 4. Type the magic words
+&gt; Write a paper using the data in the folder</code></pre>
+
+      <p>That's it. Here's what happens behind the scenes:</p>
+
+      <table>
+        <thead><tr><th>Time</th><th>Stage</th><th>What Happens</th></tr></thead>
+        <tbody>
+          <tr><td>0:00</td><td>Setup</td><td>Read all skill files into context</td></tr>
+          <tr><td>0:30</td><td>Profile</td><td>data_profiler.py &rarr; data_profile.json</td></tr>
+          <tr><td>2:00</td><td>Research Q</td><td>AI formulates PICO hypothesis</td></tr>
+          <tr><td>5:00</td><td>Analysis</td><td>Writes &amp; runs analysis.py, generates figures</td></tr>
+          <tr><td>25:00</td><td>Writing</td><td>Fills JAMA template + PubMed citations</td></tr>
+          <tr><td>40:00</td><td>Compile</td><td>pdflatex &rarr; bibtex &rarr; pdflatex &times; 2</td></tr>
+          <tr><td>45:00</td><td>QA</td><td>9-point quality checklist &rarr; paper.pdf ready</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Our Exam Result</h3>
+      <p>During the midterm, the workflow received a dataset about <strong>NIH grant funding disruptions</strong> (5,419 grants, 15 variables) and produced:</p>
+      <ul>
+        <li><strong>Research question:</strong> Predictors of NIH grant reinstatement after the 2025 funding crisis</li>
+        <li><strong>Analysis:</strong> Multivariable logistic regression (pseudo-R&sup2; = 0.44)</li>
+        <li><strong>Key finding:</strong> Court involvement was the strongest predictor (OR = 144.6; 95% CI, 69.4&ndash;301.6)</li>
+        <li><strong>Paper:</strong> 9 pages, 3 figures, 1 table, 8 verified PubMed references</li>
+        <li><strong>Time:</strong> ~50 minutes, zero human intervention</li>
+      </ul>
+
+      <!-- Section 10 -->
+      <h2 id="principles">10. Design Principles</h2>
+
+      <h3>Principle 1: Skills &gt; Prompts</h3>
+      <p>Detailed skill files are <strong>dramatically more effective</strong> than prompt engineering. Skills are persistent, modular, and testable.</p>
+
+      <h3>Principle 2: Data Drives Everything</h3>
+      <p>Zero hardcoded logic. The AI reads the data profile, then decides: research question, statistical method, figure count, section content. This makes the workflow truly generic.</p>
+
+      <h3>Principle 3: Verify, Don't Trust</h3>
+      <ul>
+        <li><strong>Statistics:</strong> All numbers from <code>analysis_report.json</code>, never from AI memory</li>
+        <li><strong>Citations:</strong> Every reference fetched from PubMed API via MCP</li>
+        <li><strong>Quality:</strong> Automated 9-point checklist catches errors</li>
+      </ul>
+
+      <h3>Principle 4: Concrete Artifacts at Every Stage</h3>
+      <p>Each stage produces an inspectable file. If Stage 4 fails, check Stage 3's JSON &mdash; no need to re-run everything.</p>
+
+      <h3>Principle 5: One Command, One Pipeline</h3>
+      <p>A single end-to-end command is easier to test, more reliable, and more impressive than multiple fragmented commands.</p>
+
+      <!-- Section 11 -->
+      <h2 id="bonus">11. Bonus: Post-Paper Products</h2>
+
+      <h3>Automated Slide Deck</h3>
+      <p>We use <code>pptxgenjs</code> to programmatically generate a 13-slide presentation with JAMA-inspired design:</p>
+      <pre><code>npm install pptxgenjs
+node exam_paper/create_slides.js
+# &rarr; exam_paper/presentation.pptx</code></pre>
+
+      <h3>Automated Presentation Video</h3>
+      <p>Combine slide images with AI-generated narration:</p>
+      <pre><code>pip install edge-tts moviepy
+brew install --cask libreoffice
+
+python exam_paper/make_video.py
+# &rarr; exam_paper/presentation.mp4</code></pre>
+
+      <p>The pipeline: <strong>LibreOffice</strong> converts PPTX &rarr; images, <strong>edge-tts</strong> converts script &rarr; audio, <strong>moviepy</strong> combines them &rarr; MP4.</p>
+
+      <!-- Section 12 -->
+      <h2 id="troubleshooting">12. Troubleshooting</h2>
+      <table>
+        <thead><tr><th>Problem</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>AI gets stuck / loops</td><td>Ambiguous skill instruction</td><td>Make the skill more specific</td></tr>
+          <tr><td>LaTeX compilation fails</td><td>Unescaped special characters</td><td>Check .log file, escape _ &amp; % # $</td></tr>
+          <tr><td>AI fabricates statistics</td><td>Not reading from JSON</td><td>Add "ALL stats from analysis_report.json" to command</td></tr>
+          <tr><td>Citations missing in PDF</td><td>bibtex didn't run</td><td>Full 4-step compile: pdflatex &rarr; bibtex &rarr; pdflatex &times; 2</td></tr>
+          <tr><td>Paper exceeds 10 pages</td><td>Too much content</td><td>Trim Discussion, move details to supplement</td></tr>
+        </tbody>
+      </table>
+
+      <!-- Conclusion -->
+      <h2>Conclusion</h2>
+      <p>Building an automated research workflow is less about clever prompts and more about <strong>designing a system</strong>. The key insight: AI works best when you encode domain knowledge in structured skill files, define clear pipelines with concrete outputs, build generic tools, and verify everything.</p>
+
+      <p>Our workflow generated a 9-page JAMA paper in under 50 minutes during a live exam. The same workflow works on any public health dataset without modification.</p>
+
+      <div class="highlight-box">
+        <p><strong>The future of AI-assisted research</strong> isn't about replacing human judgment &mdash; it's about automating the tedious parts so researchers can focus on what matters: asking good questions and interpreting the answers.</p>
+      </div>
+
+      <h2>Resources</h2>
+      <ul>
+        <li><a href="https://github.com/Harvard-BST236-2026Spring-midterm/midterm-project-standard-deviants" target="_blank">Our GitHub Repository</a> &mdash; all code, skills, commands, and outputs</li>
+        <li><a href="https://psantanna.com/claude-code-my-workflow/" target="_blank">Reference: Claude Code Academic Workflow</a></li>
+        <li><a href="https://github.com/daymade/claude-code-skills" target="_blank">Claude Skills Development</a></li>
+      </ul>
+
+      <p style="margin-top: 2rem; color: var(--color-text-muted); font-style: italic; font-size: 0.9rem;">Built with Claude Code, Python, LaTeX, and a lot of iterating. No AI was harmed in the making of this workflow (though several LaTeX compilation attempts were).</p>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    &copy; 2026 BST236 Coding Blog &middot; Built with &#10084;&#65039; and AI
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      toggle.textContent = sidebar.classList.contains('open') ? '\u2715' : '\u2630';
+    });
+  </script>
+</body>
+</html>
